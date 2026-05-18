@@ -6,7 +6,7 @@ export async function getAndProcessActivity(activityId: number, athleteId: numbe
 	console.log(`Processing activity ${activityId} from athlete ${athleteId}`);
 	const activity: StravaActivity = await strava.getActivityWithRefresh(activityId.toString(), athleteId.toString());
 
-	console.log(`activity ${activity}`);
+	// console.log(`activity:`, JSON.stringify(activity));
 
 	if (activity.visibility != 'everyone') {
 		console.log(`visibility is ${activity.visibility}, deleting`);
@@ -35,8 +35,9 @@ export function shouldProcess(activity: StravaActivity, egan: Egan): boolean {
 		return false;
 	}
 
-	const activitySegments = new Set(activity.segment_efforts?.map((effort) => effort.id));
-	if (activitySegments.intersection(egan.segments).size == 0) {
+	const activitySegments = new Set(activity.segment_efforts?.map((effort) => effort.segment.id));
+	console.log(activitySegments.isDisjointFrom(egan.segments));
+	if (activitySegments.isDisjointFrom(egan.segments)) {
 		console.log('empty intersection with egan segments');
 		return false;
 	}
@@ -63,19 +64,22 @@ async function processActivity(activity: StravaActivity, athleteId: number, egan
 	//   check pr_rank
 	//   check kom_rank
 	// save activity.device_name}
-	const efforts = activity.segment_efforts
-		?.filter((effort) => {
-			return egan.segments.has(effort.segment.id);
-		})
-		.map((effort) => {
-			return {
-				id: effort.id,
-				time: effort.elapsed_time, // Should this be moving_time ?
-				power: effort.device_watts ? effort.average_watts : null,
-				pr_rank: effort.pr_rank,
-				kom_rank: effort.kom_rank,
-			} as ProcessedSegment;
-		});
+	var efforts: ProcessedSegment[] = [];
+	for (var effort of activity.segment_efforts ?? []) {
+		const name = effort.name;
+		if (!egan.segments.has(effort.segment.id)) {
+			console.log(`skipping effort on ${name}`);
+			continue;
+		}
+		efforts.push({
+			id: effort.id,
+			time: effort.elapsed_time, // Should this be moving_time ?
+			power: effort.device_watts ? effort.average_watts : null,
+			pr_rank: effort.pr_rank,
+			kom_rank: effort.kom_rank,
+		} as ProcessedSegment);
+	}
+
 	return {
 		activity_id: activity.id,
 		athlete_id: athleteId,
