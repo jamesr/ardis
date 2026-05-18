@@ -1,7 +1,7 @@
 import express from 'express';
 import { registerAuth } from './auth.js';
 import { registerWebhooks } from './webhooks.js';
-import { strava } from './strava.js';
+import { WEBHOOKS_VERIFY_TOKEN, strava } from './strava.js';
 import { createExpressHandlers } from 'strava-sdk';
 
 const app = express();
@@ -12,8 +12,15 @@ app.use(express.json());
 registerAuth(app);
 
 registerWebhooks();
-const WEBHOOK_VERIFY_TOKEN = 'ardis-webhook-verify-token';
-const handlers = createExpressHandlers(strava, WEBHOOK_VERIFY_TOKEN);
+const handlers = createExpressHandlers(strava, WEBHOOKS_VERIFY_TOKEN);
+
+// TODO: check await strava.webhooks.listSubscriptions(); and if needed
+try {
+	strava.webhooks.createSubscription('https://staging.eganride.org/ardis/webhooks');
+} catch (error) {
+	console.warn(`could not create subscription: ${error}`);
+}
+
 app.get('/ardis/webhooks', handlers.webhooks.verify());
 app.post('/ardis/webhooks', handlers.webhooks.events());
 

@@ -28,11 +28,6 @@ export function registerAuth(app: express.Express) {
 				expiresAt: new Date(tokens.expires_at * 1000),
 			});
 
-			// Register webhooks
-			strava.webhooks.createSubscription(
-				WEBHOOK_URL,
-			);
-
 			res.send(`Welcome, ${tokens.athlete.firstname}!`);
 		} catch (error) {
 			res.status(500).send(`Authentication failed: ${error}`);

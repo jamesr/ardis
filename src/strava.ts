@@ -1,8 +1,13 @@
 import { StravaClient, MemoryStorage } from 'strava-sdk';
 
+export const WEBHOOKS_VERIFY_TOKEN = 'ardis-webhook-verify-token';
+
 export const strava = new StravaClient({
 	clientId: process.env.STRAVA_CLIENT_ID ?? 'test_client_id',
 	clientSecret: process.env.STRAVA_CLIENT_SECRET ?? 'test_client_secret',
+	webhooks: {
+		verifyToken: WEBHOOKS_VERIFY_TOKEN,
+	},
 	redirectUri: 'https://staging.eganride.org/ardis/callback',
 	storage: new MemoryStorage(), // Use your own storage implementation for production
 	onRateLimit: (info) => {
