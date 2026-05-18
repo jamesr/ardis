@@ -8,7 +8,7 @@ export async function getAndProcessActivity(activityId: number, athleteId: numbe
 
 	console.log(`activity ${activity}`);
 
-	if (activity.visibility != 'public') {
+	if (activity.visibility != 'everyone') {
 		console.log(`visibility is ${activity.visibility}, deleting`);
 		deleteActivity(activityId, athleteId);
 	}
@@ -30,7 +30,7 @@ export async function getAndProcessActivity(activityId: number, athleteId: numbe
 }
 
 export function shouldProcess(activity: StravaActivity, egan: Egan): boolean {
-	if (activity.visibility != 'public') {
+	if (activity.visibility != 'everyone') {
 		console.log('non-public event', activity.visibility);
 		return false;
 	}

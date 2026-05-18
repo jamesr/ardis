@@ -25,7 +25,7 @@ describe('activity processing', () => {
 		] as DetailedSegmentEffort[];
 		const noEganSegmentActivity = {
 			id: 12345,
-			visibility: 'public',
+			visibility: 'everyone',
 			start_date: '2026-03-10T23:14:16Z',
 			segment_efforts: segments,
 		} as StravaActivity;
@@ -41,7 +41,7 @@ describe('activity processing', () => {
 		] as DetailedSegmentEffort[];
 		const noEganSegmentActivity = {
 			id: 12345,
-			visibility: 'public',
+			visibility: 'everyone',
 			start_date: '2026-03-10T23:14:16Z',
 			segment_efforts: segments,
 		} as StravaActivity;
