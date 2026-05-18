@@ -3,8 +3,7 @@ import { StravaClient, MemoryStorage } from 'strava-sdk';
 export const strava = new StravaClient({
 	clientId: process.env.STRAVA_CLIENT_ID ?? 'test_client_id',
 	clientSecret: process.env.STRAVA_CLIENT_SECRET ?? 'test_client_secret',
-	// redirectUri: "http://localhost:8787/auth/callback",
-	redirectUri: 'https://staging.eganride.org/auth/callback',
+	redirectUri: 'https://staging.eganride.org/ardis/callback',
 	storage: new MemoryStorage(), // Use your own storage implementation for production
 	onRateLimit: (info) => {
 		console.log(`Rate limit: ${info.used15Min}/${info.limit15Min} (15min)`);

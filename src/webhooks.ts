@@ -1,4 +1,3 @@
-import { StravaClient } from 'strava-sdk';
 import { strava } from './strava.js';
 import { deleteActivity, deleteAllActivities, getAndProcessActivity } from './activity.js';
 

@@ -14,7 +14,7 @@ registerAuth(app);
 registerWebhooks();
 const WEBHOOK_VERIFY_TOKEN = 'ardis-webhook-verify-token';
 const handlers = createExpressHandlers(strava, WEBHOOK_VERIFY_TOKEN);
-app.get('/webhooks', handlers.webhooks.verify());
-app.post('/webhooks', handlers.webhooks.events());
+app.get('/ardis/webhooks', handlers.webhooks.verify());
+app.post('/ardis/webhooks', handlers.webhooks.events());
 
 app.listen(3000);

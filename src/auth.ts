@@ -1,10 +1,9 @@
 import express from 'express';
-import { StravaClient } from 'strava-sdk';
 import { strava } from './strava.js';
 
 export function registerAuth(app: express.Express) {
-	app.get('/auth/strava', (req, res) => {
-		console.log('auth/strava get');
+	app.get('/ardis/auth', (req, res) => {
+		console.log('auth get');
 		const authUrl = strava.oauth.getAuthUrl({
 			scopes: ['activity:read'],
 			state: 'optional-csrf-token',
@@ -13,8 +12,8 @@ export function registerAuth(app: express.Express) {
 	});
 
 	// Handle OAuth callback
-	app.get('/auth/callback', async (req, res) => {
-		console.log('auth/callback get');
+	app.get('/ardis/callback', async (req, res) => {
+		console.log('callback get');
 		const { code } = req.query;
 
 		try {
@@ -30,7 +29,7 @@ export function registerAuth(app: express.Express) {
 
 			res.send(`Welcome, ${tokens.athlete.firstname}!`);
 		} catch (error) {
-			res.status(500).send('Authentication failed');
+			res.status(500).send(`Authentication failed: ${error}`);
 		}
 	});
 }
