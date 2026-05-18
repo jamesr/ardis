@@ -1,5 +1,6 @@
 import express from 'express';
 import { strava } from './strava.js';
+import { WEBHOOK_URL } from './webhooks.js';
 
 export function registerAuth(app: express.Express) {
 	app.get('/ardis/auth', (req, res) => {
@@ -26,6 +27,11 @@ export function registerAuth(app: express.Express) {
 				refreshToken: tokens.refresh_token,
 				expiresAt: new Date(tokens.expires_at * 1000),
 			});
+
+			// Register webhooks
+			strava.webhooks.createSubscription(
+				WEBHOOK_URL,
+			);
 
 			res.send(`Welcome, ${tokens.athlete.firstname}!`);
 		} catch (error) {

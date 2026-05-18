@@ -1098,19 +1098,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dist@npm:^0.1.2":
-  version: 0.1.2
-  resolution: "dist@npm:0.1.2"
-  dependencies:
-    filesize: "npm:~1.6.6"
-    optimist: "npm:~0.3.5"
-    uglify-js: "npm:~1.3.4"
-  bin:
-    dist: ./bin/dist.js
-  checksum: 10c0/5fa3d36a1b41a44e9c341467c14c765e3b9033ef81bdde776eb58809d890e7e6cc823d9bc9227e3bb57cfc5ceebcaae4483e59c96623e19d605a09d7358ee70b
-  languageName: node
-  linkType: hard
-
 "dunder-proto@npm:^1.0.1":
   version: 1.0.1
   resolution: "dunder-proto@npm:1.0.1"
@@ -1495,13 +1482,6 @@ __metadata:
   dependencies:
     flat-cache: "npm:^4.0.0"
   checksum: 10c0/9e2b5938b1cd9b6d7e3612bdc533afd4ac17b2fc646569e9a8abbf2eb48e5eb8e316bc38815a3ef6a1b456f4107f0d0f055a614ca613e75db6bf9ff4d72c1638
-  languageName: node
-  linkType: hard
-
-"filesize@npm:~1.6.6":
-  version: 1.6.7
-  resolution: "filesize@npm:1.6.7"
-  checksum: 10c0/f9128237a6d59eb9cff12a99601c0dd8c272f4c36a6605676f3fca5e7be0f198490c81c0e5aaf73b3d934ff8aa79bbda07aab4c06c037255a1e6bc0548b91ed9
   languageName: node
   linkType: hard
 
@@ -2090,15 +2070,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"optimist@npm:~0.3.5":
-  version: 0.3.7
-  resolution: "optimist@npm:0.3.7"
-  dependencies:
-    wordwrap: "npm:~0.0.2"
-  checksum: 10c0/510175b89c4a2410ae0df38ce505a9a1bd4a3a4698006d976da208cd745f1fe9ac081a6f89202b4c99f9efd7a2efd84f356c28ef010921ec5f7416fef22a8a7e
-  languageName: node
-  linkType: hard
-
 "optionator@npm:^0.9.3":
   version: 0.9.4
   resolution: "optionator@npm:0.9.4"
@@ -2485,16 +2456,15 @@ __metadata:
 
 "strava-sdk@file:../strava-sdk::locator=ardis%40workspace%3A.":
   version: 0.1.5
-  resolution: "strava-sdk@file:../strava-sdk#../strava-sdk::hash=f09bfb&locator=ardis%40workspace%3A."
+  resolution: "strava-sdk@file:../strava-sdk#../strava-sdk::hash=5327ea&locator=ardis%40workspace%3A."
   dependencies:
     bottleneck: "npm:^2.19.5"
-    dist: "npm:^0.1.2"
   peerDependencies:
     express: ^4.18.0 || ^5.0.0
   peerDependenciesMeta:
     express:
       optional: true
-  checksum: 10c0/f9e44cb837e0447dbbaedb9a1f4ed96c1a45ad4f14dc2602a37ffbccf6323f3e079dd7017cc423af6065d351e87a06ea33f4b7d49dde48c6159f92c3aeb7bce9
+  checksum: 10c0/42e8174e9499bf8e042ff81b02cf117b43d6a0fcb965726c4419b8be3bbc39c0621bb9eaba2897235b366d976b8944f1caf1cdecf084d4098abee92adf4e614f
   languageName: node
   linkType: hard
 
@@ -2632,15 +2602,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/2f25c74e65663c248fa1ade2b8459d9ce5372ff9dad07067310f132966ebec1d93f6c42f0baf77a6b6a7a91460463f708e6887013aaade22111037457c6b25df
-  languageName: node
-  linkType: hard
-
-"uglify-js@npm:~1.3.4":
-  version: 1.3.5
-  resolution: "uglify-js@npm:1.3.5"
-  bin:
-    uglifyjs: ./bin/uglifyjs
-  checksum: 10c0/9a513fc1ffcceb9168b4eeaa93c209a592ac5c7bcbd6f0cbd0ac3153b4d88b76d23d4d84c2162a0f7712e4c4bc116bd8371eba7bb14ee35b352d2ba2139a5d7e
   languageName: node
   linkType: hard
 
@@ -2844,13 +2805,6 @@ __metadata:
   version: 1.2.5
   resolution: "word-wrap@npm:1.2.5"
   checksum: 10c0/e0e4a1ca27599c92a6ca4c32260e8a92e8a44f4ef6ef93f803f8ed823f486e0889fc0b93be4db59c8d51b3064951d25e43d434e95dc8c960cc3a63d65d00ba20
-  languageName: node
-  linkType: hard
-
-"wordwrap@npm:~0.0.2":
-  version: 0.0.3
-  resolution: "wordwrap@npm:0.0.3"
-  checksum: 10c0/b3b212f8b2167091f59bc60929ada2166eb157abb6c8c82e2a705fe5aa5876440c3966ab39eb6c7bcb2ff0ac0c8d9fba726a9c2057b83bd65cdc1858f9d816ce
   languageName: node
   linkType: hard
 

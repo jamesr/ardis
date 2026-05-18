@@ -1,6 +1,8 @@
 import { strava } from './strava.js';
 import { deleteActivity, deleteAllActivities, getAndProcessActivity } from './activity.js';
 
+export const WEBHOOK_URL = 'https://staging.eganride.org/ardis/webhook';
+
 export function registerWebhooks() {
 	strava.webhooks.onActivityCreate(async (event, athleteId) => {
 		console.log('onActivityCreate');
