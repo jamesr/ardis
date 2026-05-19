@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { shouldProcess } from '../src/activity';
+import { processActivity, shouldProcess } from '../src/activity';
 import { DetailedSegmentEffort, StravaActivity } from 'strava-sdk';
 import { Egan } from '../src/egan';
 
@@ -391,5 +391,10 @@ describe('activity processing', () => {
 		};
 
 		expect(shouldProcess(activity, egan)).toBe(true);
+
+		let processed = processActivity(activity, 2, egan);
+		expect(processed.efforts.length).toBe(2);
+		expect(processed.efforts[0].time).toBe(1833);
+		expect(processed.efforts[1].time).toBe(494);
 	});
 });

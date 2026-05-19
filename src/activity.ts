@@ -1,6 +1,7 @@
 import { type StravaActivity } from 'strava-sdk';
 import { strava } from './strava.js';
-import { type Egan, findEgan } from './egan.js';
+import { type Egan, findEganByDate } from './egan.js';
+import { deleteAllResults, deleteResults } from './results.js';
 
 export async function getAndProcessActivity(activityId: number, athleteId: number) {
 	console.log(`Processing activity ${activityId} from athlete ${athleteId}`);
@@ -15,7 +16,7 @@ export async function getAndProcessActivity(activityId: number, athleteId: numbe
 
 	const activityDay = activity.start_date.substring(0, activity.start_date.indexOf('T'));
 
-	const egan = findEgan(activityDay);
+	const egan = findEganByDate(activityDay);
 	if (!egan) {
 		console.log(`Couldn't find egan on ${activityDay}`);
 		return;
@@ -27,6 +28,8 @@ export async function getAndProcessActivity(activityId: number, athleteId: numbe
 
 	const processed = processActivity(activity, athleteId, egan);
 	console.log('processed activity: ', JSON.stringify(processed, null, 2));
+
+	storeResult(processed, egan.name);
 }
 
 export function shouldProcess(activity: StravaActivity, egan: Egan): boolean {
@@ -45,22 +48,23 @@ export function shouldProcess(activity: StravaActivity, egan: Egan): boolean {
 	return true;
 }
 
-interface ProcessedSegment {
-	id: number;
-	time: number;
-	power: number | undefined;
-	pr_rank: number | undefined;
-	kom_rank: number | undefined;
+export interface ProcessedSegment {
+	readonly id: number;
+	readonly time: number;
+	readonly power: number | undefined;
+	readonly pr_rank: number | undefined;
+	readonly kom_rank: number | undefined;
 }
 
-interface ProcessedActivity {
-	activity_id: number;
-	athlete_id: number;
-	device_name: string;
-	efforts: ProcessedSegment[];
+export interface ProcessedActivity {
+	readonly activity_id: number;
+	readonly athlete_id: number;
+	readonly device_name: string;
+	readonly egan_name: string;
+	readonly efforts: ProcessedSegment[];
 }
 
-async function processActivity(activity: StravaActivity, athleteId: number, egan: Egan) {
+export function processActivity(activity: StravaActivity, athleteId: number, egan: Egan): ProcessedActivity {
 	//   check pr_rank
 	//   check kom_rank
 	// save activity.device_name}
@@ -71,27 +75,30 @@ async function processActivity(activity: StravaActivity, athleteId: number, egan
 			console.log(`skipping effort on ${name}`);
 			continue;
 		}
-		efforts.push({
+		var processed = {
 			id: effort.id,
 			time: effort.elapsed_time, // Should this be moving_time ?
 			power: effort.device_watts ? effort.average_watts : null,
 			pr_rank: effort.pr_rank,
 			kom_rank: effort.kom_rank,
-		} as ProcessedSegment);
+		} as ProcessedSegment;
+		console.log('processed effort: ', JSON.stringify(processed));
+		efforts.push(processed);
 	}
 
 	return {
 		activity_id: activity.id,
 		athlete_id: athleteId,
 		device_name: activity.device_name,
-		efforts: efforts,
+		egan_name: egan.name,
+		efforts,
 	} as ProcessedActivity;
 }
 
-export async function deleteActivity(_activityId: number, _athleteId: number) {
-	// TODO: Find and delete this activity.
+export async function deleteActivity(activityId: number, athleteId: number) {
+	deleteResults(activityId, athleteId);
 }
 
-export async function deleteAllActivities(_athleteId: number) {
-	// TODO: Find and delete all activities from this athlete.
+export async function deleteAllActivities(athleteId: number) {
+	deleteAllResults(athleteId);
 }

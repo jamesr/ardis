@@ -3,6 +3,7 @@ import { registerAuth } from './auth.js';
 import { registerWebhooks } from './webhooks.js';
 import { WEBHOOKS_VERIFY_TOKEN, strava } from './strava.js';
 import { createExpressHandlers } from 'strava-sdk';
+import { resultsHandler } from './results.js';
 
 const app = express();
 
@@ -23,5 +24,6 @@ try {
 
 app.get('/ardis/webhooks', handlers.webhooks.verify());
 app.post('/ardis/webhooks', handlers.webhooks.events());
+app.get('/ardis/ride-results/*name', resultsHandler);
 
 app.listen(3000);
