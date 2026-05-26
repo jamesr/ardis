@@ -25,24 +25,24 @@ export const strava = new StravaClient({
 });
 
 var segmentCache = new Map<number, SummarySegment>();
-var routeCache = new Map<number, Route>();
+var routeCache = new Map<string, Route>();
 
-export async function getRouteById(routeId: number, athleteId: number): Promise<Route | undefined> {
+export async function getRouteById(routeId: string, athleteId: number): Promise<Route | undefined> {
 	if (routeCache.has(routeId)) {
 		return routeCache.get(routeId);
 	}
-	const fetchedRoute = await strava.getRouteById(routeId.toString(), athleteId.toString());
+	const fetchedRoute = await strava.getRouteById(routeId, athleteId.toString());
 	// TODO: Do we cache negative results?
 	console.log(`cached route ${routeId}`);
 	routeCache.set(routeId, fetchedRoute);
 	return fetchedRoute;
 }
 
-export function getCachedRouteById(routeId: number): Route | undefined {
+export function getCachedRouteById(routeId: string): Route | undefined {
 	return routeCache.get(routeId);
 }
 
-export async function fetchRouteIfNeeded(routeId: number, athleteId: number) {
+export async function fetchRouteIfNeeded(routeId: string, athleteId: number) {
 	if (routeCache.has(routeId)) {
 		return;
 	}

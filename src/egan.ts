@@ -11,11 +11,11 @@ export const egans = new Map<string, Egan>([
 		'egan-2026-01',
 		// TODO: Load real data from somewhere - static files, perhaps?
 		{
-			date: '2026-03-10',
+			date: '2026-03-11', // A lie, the actual date was 03-10
 			route: 2874856572963175602,
 			name: 'egan-2026-01',
 			title: "Egan 2026.01: Let's Cancel Egan 2026!",
-			segments: new Set([4243560,610571,21036783,10534914,3687553,686220,863594]),
+			segments: new Set([4243560, 610571, 21036783, 10534914, 3687553, 686220, 863594]),
 		} as Egan,
 	],
 ]);
