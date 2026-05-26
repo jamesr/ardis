@@ -32,4 +32,6 @@ export async function athletesHandler(req: Request, res: Response) {
 	response += `<body>Welcome, ${athlete.firstname!} ${athlete.lastname!}`;
 
 	// TODO: Link to all Egan results containing this athlete.
+
+	res.send(response);
 }
