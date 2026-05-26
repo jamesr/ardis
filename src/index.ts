@@ -26,6 +26,6 @@ try {
 app.get('/ardis/webhooks', handlers.webhooks.verify());
 app.post('/ardis/webhooks', handlers.webhooks.events());
 app.get('/ardis/ride-results/*name', resultsHandler);
-app.get('/ardis/athletes', athletesHandler);
+app.get('/ardis/athletes/*athleteId', athletesHandler);
 
 app.listen(3000);

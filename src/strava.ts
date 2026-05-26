@@ -33,10 +33,19 @@ export async function getRouteById(routeId: number, athleteId: number): Promise<
 	}
 	const fetchedRoute = await strava.getRouteById(routeId.toString(), athleteId.toString());
 	// TODO: Do we cache negative results?
+	console.log(`cached route ${routeId}`);
 	routeCache.set(routeId, fetchedRoute);
 	return fetchedRoute;
 }
 
 export function getCachedRouteById(routeId: number): Route | undefined {
 	return routeCache.get(routeId);
+}
+
+export async function fetchRouteIfNeeded(routeId: number, athleteId: number) {
+	if (routeCache.has(routeId)) {
+		return;
+	}
+
+	getRouteById(routeId, athleteId);
 }

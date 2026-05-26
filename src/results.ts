@@ -14,7 +14,7 @@ function pushToMapEntry<K, V>(map: Map<K, V[]>, key: K, value: V) {
 	map.get(key)?.push(value);
 }
 
-async function computeResults(egan: Egan): Promise<RideEfforts | undefined> {
+function computeResults(egan: Egan): RideEfforts | undefined {
 	const title = egan.title;
 
 	const club = {
@@ -27,8 +27,9 @@ async function computeResults(egan: Egan): Promise<RideEfforts | undefined> {
 	const segmentsInOrder: Array<number> = segmentIds.toSorted();
 	const segments = {};
 
-	const route = await getCachedRouteById(egan.route);
+	const route = getCachedRouteById(egan.route);
 	if (route == undefined) {
+		console.log(`Could not find route ${egan.route}`);
 		return undefined;
 	}
 
@@ -81,10 +82,12 @@ async function computeResults(egan: Egan): Promise<RideEfforts | undefined> {
 
 export function resultsHandler(request: Request, response: Response) {
 	var name = request.params.name;
-	if (typeof name != 'string') {
+	if (name === undefined) {
+		console.log(`No name`);
 		response.sendStatus(400);
 		return;
 	}
+	name = name!.toString();
 	if (!name.endsWith('.json')) {
 		response.sendStatus(404);
 		return;

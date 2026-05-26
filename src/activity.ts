@@ -1,13 +1,11 @@
 import { type StravaActivity } from 'strava-sdk';
-import { strava } from './strava.js';
+import { fetchRouteIfNeeded, strava } from './strava.js';
 import { type Egan, findEganByDate } from './egan.js';
 import { deleteAllResults, deleteResults, storeResult } from './results.js';
 
 export async function getAndProcessActivity(activityId: number, athleteId: number) {
 	console.log(`Processing activity ${activityId} from athlete ${athleteId}`);
 	const activity: StravaActivity = await strava.getActivityWithRefresh(activityId.toString(), athleteId.toString());
-
-	// console.log(`activity:`, JSON.stringify(activity));
 
 	if (activity.visibility != 'everyone') {
 		console.log(`visibility is ${activity.visibility}, deleting`);
@@ -30,6 +28,8 @@ export async function getAndProcessActivity(activityId: number, athleteId: numbe
 	console.log('processed activity: ', JSON.stringify(processed, null, 2));
 
 	storeResult(processed, egan.name);
+
+	await fetchRouteIfNeeded(egan.route, athleteId);
 }
 
 export function shouldProcess(activity: StravaActivity, egan: Egan): boolean {

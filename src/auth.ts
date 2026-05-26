@@ -30,7 +30,7 @@ export function registerAuth(app: express.Express) {
 			});
 
 			await registerAthlete(parseInt(athleteId));
-			res.redirect(`/ardis/athletes?id=${athleteId}`);
+			res.redirect(`/ardis/athletes/${athleteId}`);
 		} catch (error) {
 			res.status(500).send(`Authentication failed: ${error}`);
 		}
