@@ -1,6 +1,6 @@
 // Subset of stravaDataTypes.ts in route-viewer
 
-import type { Route } from "strava-sdk";
+import type { Route } from 'strava-sdk';
 
 export enum ResourceState {
 	Meta = 1,

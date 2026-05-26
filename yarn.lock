@@ -2456,7 +2456,7 @@ __metadata:
 
 "strava-sdk@file:../strava-sdk::locator=ardis%40workspace%3A.":
   version: 0.1.5
-  resolution: "strava-sdk@file:../strava-sdk#../strava-sdk::hash=81261f&locator=ardis%40workspace%3A."
+  resolution: "strava-sdk@file:../strava-sdk#../strava-sdk::hash=8f6599&locator=ardis%40workspace%3A."
   dependencies:
     bottleneck: "npm:^2.19.5"
   peerDependencies:
@@ -2464,7 +2464,7 @@ __metadata:
   peerDependenciesMeta:
     express:
       optional: true
-  checksum: 10c0/0b5632300fd750d27745c7de3143a8a36e966273f42759b3569c57f4a125e8eee5d78a8cf34b72f599b8861e379b30f213b54aacfda2689d8ace5fda5fd55405
+  checksum: 10c0/04cffeee0ced2a14880800acc5610ade50a72f6125c12d17e5310d619d25ac2c788b3b020b3891fc3b07b73e76349c9139ddc6c6cba21a31910ff541891df7bc
   languageName: node
   linkType: hard
 

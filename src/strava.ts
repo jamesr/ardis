@@ -39,4 +39,4 @@ export async function getRouteById(routeId: number, athleteId: number): Promise<
 
 export function getCachedRouteById(routeId: number): Route | undefined {
 	return routeCache.get(routeId);
-} 
+}

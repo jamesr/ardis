@@ -20,7 +20,7 @@ export const egans = new Map<string, Egan>([
 	],
 ]);
 
-export function allEgans() : Array<string> {
+export function allEgans(): Array<string> {
 	return egans.keys().toArray();
 }
 
