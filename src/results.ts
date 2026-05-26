@@ -1,12 +1,13 @@
 import { findEganByName, type Egan } from './egan.js';
 import { type Request, type Response } from 'express';
 import type { Club, RideEfforts } from './results-types.js';
-import { strava } from './strava.js';
-import type { ProcessedActivity } from './activity.js';
+import { getCachedRouteById } from './strava.js';
+import type { ProcessedActivity, ProcessedSegment } from './activity.js';
+import { getAthleteById } from './athlete.js';
 
-var results = new Map<string, Array<ProcessedActivity>>();
+var resultsByName = new Map<string, Array<ProcessedActivity>>();
 
-function computeResults(egan: Egan): RideEfforts {
+async function computeResults(egan: Egan): Promise<RideEfforts | undefined> {
 	const title = egan.title;
 
 	const club = {
@@ -15,26 +16,61 @@ function computeResults(egan: Egan): RideEfforts {
 		url: 'https://altovelo.org/egan',
 	} as Club;
 
-	const segmentIds = new Array(egan.segments.values);
-	const segmentsInOrder = segmentIds.map((val) => val.toString()).toSorted();
+	const segmentIds: Array<number> = egan.segments.values().toArray();
+	const segmentsInOrder: Array<number> = segmentIds.toSorted();
 	const segments = {};
 
-	const route = strava.getRouteById(egan.route);
+	const route = await getCachedRouteById(egan.route);
+  if (route == undefined) {
+    return undefined;
+  }
 
-	for (const activity of results.get(egan.name) ?? []) {
-		// TODO: Look up athlete's info by id
+  var resultsBySegment = new Map<number, ProcessedSegment[]>();
+
+	for (const activity of resultsByName.get(egan.name) ?? []) {
 		for (const effort of activity.efforts) {
-			const time = effort.time;
-			const power = effort.power;
-			const pr_rank = effort.pr_rank;
-			const kom_rank = effort.kom_rank;
+      resultsBySegment.getOrInsert(effort.segment_id, []).push(effort);
 		}
 	}
+
+  for (const segment of segmentsInOrder) {
+    for (const effort of (resultsBySegment.get(segment) ?? []).toSorted(
+      (a, b) => a.time - b.time
+    )) {
+      var rank_women = 1;
+      var rank_men = 1;
+      var efforts = [];
+      const athlete = getAthleteById(effort.athlete_id);
+      if (athlete === undefined) {
+        continue;
+      }
+      var effort_rank = rank_women;
+      if (athlete.sex == "F") {
+        effort_rank = rank_women;
+        rank_women++;
+      } else {
+        effort_rank = rank_men;
+        rank_men++;
+      }
+      efforts.push(
+        {
+          athlete_name: `${athlete.firstname!} ${athlete.lastname!}`,
+          athlete_link: `/athletes/${athlete.id}`,
+          rank: effort_rank,
+          athlete_id: athlete.id!.toString(),
+          activity_id: effort.activity_id.toString(),
+          segment_effort_id: effort.segment_effort_id.toString(),
+          elapsed_time: effort.time,
+          average_power: effort.power
+        }
+      );
+    }
+  }
 
 	return {
 		title,
 		club,
-		segmentsInOrder,
+		segmentsInOrder: segmentsInOrder.map((val) => val.toString()),
 		route,
 		segments,
 	} as RideEfforts;
@@ -57,17 +93,19 @@ export function resultsHandler(request: Request, response: Response) {
 		return;
 	}
 
-	response.json(computeResults(egan));
+  const results = computeResults(egan);
+	// response.json(computeResults(egan));
+  response.send(`results: ${results}`);
 }
 
 export function storeResult(activity: ProcessedActivity, name: string) {
-	results.getOrInsert(name, []).push(activity);
+	resultsByName.getOrInsert(name, []).push(activity);
 }
 
-export function deleteAllResults(athleteId: number) {
+export function deleteAllResults(_athleteId: number) {
 	// TODO
 }
 
-export function deleteResults(activityId: number, athleteId: number) {
+export function deleteResults(_activityId: number, _athleteId: number) {
 	// TODO
 }

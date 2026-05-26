@@ -1,6 +1,6 @@
 import express from 'express';
 import { strava } from './strava.js';
-import { WEBHOOK_URL } from './webhooks.js';
+import { registerAthlete } from './athlete.js';
 
 export function registerAuth(app: express.Express) {
 	app.get('/ardis/auth', (req, res) => {
@@ -20,15 +20,17 @@ export function registerAuth(app: express.Express) {
 		try {
 			const tokens = await strava.oauth.exchangeCode(code as string);
 
+			const athleteId = tokens.athlete.id!.toString();
 			// Save tokens using your storage implementation
-			await strava.storage.saveTokens(tokens.athlete.id.toString(), {
-				athleteId: tokens.athlete.id.toString(),
+			await strava.storage.saveTokens(athleteId, {
+				athleteId,
 				accessToken: tokens.access_token,
 				refreshToken: tokens.refresh_token,
 				expiresAt: new Date(tokens.expires_at * 1000),
 			});
 
-			res.send(`Welcome, ${tokens.athlete.firstname}!`);
+			await registerAthlete(parseInt(athleteId));
+			res.redirect(`/ardis/athletes?id=${athleteId}`);
 		} catch (error) {
 			res.status(500).send(`Authentication failed: ${error}`);
 		}

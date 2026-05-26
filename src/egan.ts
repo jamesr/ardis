@@ -20,6 +20,10 @@ export const egans = new Map<string, Egan>([
 	],
 ]);
 
+export function allEgans() : Array<string> {
+	return egans.keys().toArray();
+}
+
 export function findEganByDate(activityDate: string): Egan | null {
 	for (const egan of egans.values()) {
 		if (egan.date == activityDate) {

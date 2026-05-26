@@ -1,7 +1,7 @@
 import { type StravaActivity } from 'strava-sdk';
 import { strava } from './strava.js';
 import { type Egan, findEganByDate } from './egan.js';
-import { deleteAllResults, deleteResults } from './results.js';
+import { deleteAllResults, deleteResults, storeResult } from './results.js';
 
 export async function getAndProcessActivity(activityId: number, athleteId: number) {
 	console.log(`Processing activity ${activityId} from athlete ${athleteId}`);
@@ -49,7 +49,10 @@ export function shouldProcess(activity: StravaActivity, egan: Egan): boolean {
 }
 
 export interface ProcessedSegment {
-	readonly id: number;
+	readonly segment_id: number;
+	readonly athlete_id: number;
+	readonly activity_id: number;
+	readonly segment_effort_id: number;
 	readonly time: number;
 	readonly power: number | undefined;
 	readonly pr_rank: number | undefined;
@@ -76,13 +79,16 @@ export function processActivity(activity: StravaActivity, athleteId: number, ega
 			continue;
 		}
 		var processed = {
-			id: effort.id,
+			segment_id: effort.segment.id,
+			athlete_id: athleteId,
+			activity_id: activity.id,
+			segment_effort_id: effort.id,
 			time: effort.elapsed_time, // Should this be moving_time ?
 			power: effort.device_watts ? effort.average_watts : null,
 			pr_rank: effort.pr_rank,
 			kom_rank: effort.kom_rank,
 		} as ProcessedSegment;
-		console.log('processed effort: ', JSON.stringify(processed));
+		console.log(`processed effort on ${name}: `, JSON.stringify(processed));
 		efforts.push(processed);
 	}
 

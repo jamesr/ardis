@@ -1,5 +1,7 @@
 // Subset of stravaDataTypes.ts in route-viewer
 
+import type { Route } from "strava-sdk";
+
 export enum ResourceState {
 	Meta = 1,
 	Summary = 2,
@@ -238,26 +240,6 @@ export interface RideSegment {
 	xoms: SegmentEfforts;
 	clubXoms: SegmentEfforts;
 	efforts: SegmentEfforts;
-}
-
-export interface Route {
-	athlete: SummaryAthlete;
-	description: string;
-	distance: number;
-	elevation_gain: number;
-	id: number;
-	id_str: string;
-	map: PolylineMap;
-	name: string;
-	private: boolean;
-	starred: boolean;
-	timestamp: boolean;
-	type: RouteType;
-	sub_type: RouteSubType;
-	created_at: Date;
-	updated_at: Date;
-	estimated_moving_time: number;
-	segments: SummarySegment[];
 }
 
 export interface RideEfforts {

@@ -1,4 +1,5 @@
-import { StravaClient, MemoryStorage } from 'strava-sdk';
+import { StravaClient, MemoryStorage, type Route, type StravaActivity } from 'strava-sdk';
+import type { DetailedSegment, SummarySegment } from './results-types.js';
 
 export const WEBHOOKS_VERIFY_TOKEN = 'ardis-webhook-verify-token';
 
@@ -22,3 +23,20 @@ export const strava = new StravaClient({
 	},
 	onApiCall: (info) => console.log(`api call: ${info}`),
 });
+
+var segmentCache = new Map<number, SummarySegment>();
+var routeCache = new Map<number, Route>();
+
+export async function getRouteById(routeId: number, athleteId: number): Promise<Route | undefined> {
+	if (routeCache.has(routeId)) {
+		return routeCache.get(routeId);
+	}
+	const fetchedRoute = await strava.getRouteById(routeId.toString(), athleteId.toString());
+	// TODO: Do we cache negative results?
+	routeCache.set(routeId, fetchedRoute);
+	return fetchedRoute;
+}
+
+export function getCachedRouteById(routeId: number): Route | undefined {
+	return routeCache.get(routeId);
+} 

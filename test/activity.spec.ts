@@ -376,7 +376,7 @@ describe('activity processing', () => {
 				kom_rank: null,
 				hidden: false,
 			},
-		];
+		] as DetailedSegmentEffort[];
 		let egan_segments = [646697, 6571998];
 
 		let activity: StravaActivity = {
@@ -385,6 +385,8 @@ describe('activity processing', () => {
 		};
 
 		let egan: Egan = {
+			name: 'egan-00-01',
+			title: 'Egan of yore',
 			date: '1900-01-01',
 			route: 1,
 			segments: new Set(egan_segments),
