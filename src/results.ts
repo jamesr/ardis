@@ -64,7 +64,7 @@ function computeResults(egan: Egan): RideEfforts | undefined {
 				rank: effort_rank,
 				athlete_id: athlete.id!.toString(),
 				activity_id: effort.activity_id.toString(),
-				segment_effort_id: effort.segment_effort_id.toString(),
+				segment_effort_id: effort.segment_effort_id,
 				elapsed_time: effort.time,
 				average_power: effort.power,
 			});

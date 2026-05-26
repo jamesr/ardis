@@ -52,7 +52,7 @@ export interface ProcessedSegment {
 	readonly segment_id: number;
 	readonly athlete_id: number;
 	readonly activity_id: number;
-	readonly segment_effort_id: number;
+	readonly segment_effort_id: string;
 	readonly time: number;
 	readonly power: number | undefined;
 	readonly pr_rank: number | undefined;
@@ -82,7 +82,7 @@ export function processActivity(activity: StravaActivity, athleteId: number, ega
 			segment_id: effort.segment.id,
 			athlete_id: athleteId,
 			activity_id: activity.id,
-			segment_effort_id: effort.id,
+			segment_effort_id: effort.id.toString(),
 			time: effort.elapsed_time, // Should this be moving_time ?
 			power: effort.device_watts ? effort.average_watts : null,
 			pr_rank: effort.pr_rank,
